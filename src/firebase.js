@@ -10,7 +10,14 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 // const db = firebase.firestore();
 
-export const getAuthState = () => auth.currentUser;
+export const getAuthState = () => {
+    if (!auth.currentUser)
+        return null;
+    else {
+        const { displayName, email, photoURL, uid } = auth.currentUser;
+        return { displayName, email, photoURL, uid };
+    }
+};
 
 export const signIn = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
