@@ -16,7 +16,7 @@ const getAuth = () => {
     return null;
 };
 
-const initialState = { auth: getAuth(), page: null };
+const initialState = { auth: getAuth(), page: null, message: {} };
 const store = createStore(reducers, initialState, applyMiddleware(reduxThunk));
 
 ReactDOM.render(

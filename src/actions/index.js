@@ -1,26 +1,52 @@
-import { getAuthState, signIn as fIn, signOut as fOut, sendMessage as fMsg } from "../firebase";
+import { getAuthState, signIn as fIn, signOut as fOut, sendMessage as fSend, getMessages as fGet, getRecipients as fRec } from "../firebase";
 
 const updateCache = payload => {
     window.localStorage.setItem("auth", JSON.stringify(payload));
 };
 
-//TODO
-export const sendMessage = ({ message, to }) => {
+export const fetchRecipients = from => async dispatch => {
+    const payload = await fRec(from);
+    dispatch({
+        type: "FETCH_RECIPIENTS",
+        payload
+    });
+};
+
+export const sendMessage = ({ message, to }) => async dispatch => {
     const from = getAuthState().email;
-    fMsg({ message, to, from });
+    const messageData = await fSend({ message, to, from });
+    dispatch({
+        type: "FETCH_MESSAGE",
+        payload: { messageData, to }
+    });
+};
+
+export const getMessages = to => async dispatch => {
+    const from = getAuthState().email;
+    const response = await fGet({ to, from });
+    const messages = [];
+    response.forEach(doc => messages.push(doc.data()));
+    console.log(messages);
+    dispatch({
+        type: "FETCH_MESSAGES",
+        payload: { messagesData: messages, to }
+    });
 };
 
 export const signIn = () => async dispatch => {
-    const payload = await fIn();
+    await fIn();
+    const payload = getAuthState();
     updateCache(payload);
     dispatch({
         type: "FETCH_USER",
         payload
     });
+    fetchRecipients(getAuthState().email);
 }
 
 export const signOut = () => async dispatch => {
-    const payload = await fOut();
+    await fOut();
+    const payload = getAuthState();
     updateCache(payload);
     dispatch({
         type: "FETCH_USER",

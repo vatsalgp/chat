@@ -18,10 +18,10 @@ class NewForm extends React.Component {
         return (
             <form>
                 <div style={{ display: "inline-block" }}>
-                    <input type="text" name="name" onChange={this.onChangeHandler} />
+                    <input placeholder="Email Address" type="email" name="name" onChange={this.onChangeHandler} />
                 </div>
                 <div style={{ display: "inline-block" }}>
-                    <input class="submit-btn" type="submit" value="+" onClick={this.onSubmitHandler} />
+                    <input type="submit" value="+" onClick={this.onSubmitHandler} />
                 </div>
             </form>
         );

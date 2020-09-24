@@ -26,10 +26,10 @@ const Header = ({ auth, signIn, signOut, page, showListPage }) => {
     return (
         <nav>
             <div className="nav-wrapper">
-                <ul id="nav-mobile" class="left">
+                <ul id="nav-mobile" className="left">
                     <li><SignButton /></li>
                 </ul >
-                <ul id="nav-mobile" class="right">
+                <ul id="nav-mobile" className="right">
                     {page ? <ChatHeader /> : <ListHeader />}
                 </ul >
             </div>
