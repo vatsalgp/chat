@@ -33,13 +33,14 @@ class ChatPage extends React.Component {
                         type="text"
                         name="name"
                         value={this.state.message}
-                        style={{ marginLeft: "20px", width: "90vw" }}
+                        style={{ marginLeft: "5vw", width: "80vw" }}
                         onChange={this.onChangeHandler} />
                 </div>
                 <div style={{ display: "inline-block" }}>
                     <input
                         type="submit"
-                        value=">"
+                        value="Send"
+                        style={{ marginRight: "5vw", width: "10vw" }}
                         onClick={this.onSubmitHandler} />
                 </div>
             </form>
@@ -47,15 +48,17 @@ class ChatPage extends React.Component {
     }
 
     renderChat() {
+        let jsx = [];
         if (this.props.messages)
-            return this.props.messages.map(message => (
-                <div
-                    className={message.email === this.props.to ? "received" : "sent"}
+            jsx = this.props.messages.map(message => (
+                < li
+                    className={(message.from === this.props.to ? "received" : "sent") + " message"}
                     key={message.createdAt}
-                >{message.message}</div>
+                >
+                    <p className="chat">{message.message}</p>
+                </ li>
             ));
-        else
-            return <div></div>;
+        return <ul >{jsx}</ul>;
     }
 
     render() {

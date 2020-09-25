@@ -1,5 +1,5 @@
 import React from "react";
 
-const SignInPage = () => <div>Sign In to Continue</div>;
+const SignInPage = () => <h1 style={{ textAlign: "center" }}>Sign In to Continue</h1>;
 
 export default SignInPage;

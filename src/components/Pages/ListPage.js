@@ -14,7 +14,7 @@ class ListPage extends React.Component {
         const jsx = [];
         for (let email in this.props.message)
             jsx.push(<ListItem email={email} key={email} />);
-        return jsx;
+        return <div className="collection">{jsx}</div>;
     }
 };
 

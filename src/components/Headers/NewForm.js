@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { showChatPage } from "../actions";
+import { showChatPage } from "../../actions";
 
 class NewForm extends React.Component {
     state = { email: "" }
@@ -27,8 +27,9 @@ class NewForm extends React.Component {
                 </div>
                 <div style={{ display: "inline-block" }}>
                     <input
+                        className="btn"
                         type="submit"
-                        value="+"
+                        value="Add"
                         onClick={this.onSubmitHandler}
                     />
                 </div>
