@@ -1,26 +1,29 @@
 import React from "react";
-
 import { connect } from "react-redux";
 
-import { sendMessage, getMessages } from "../../actions"
+import { sendMessage, fetchMessages } from "../../actions"
 
 class ChatPage extends React.Component {
     state = { message: "" }
 
     componentDidMount() {
-        if (this.props.messages == null)
-            this.props.getMessages(this.props.to);
+        this.props.fetchMessages(this.props.to, this);
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     onSubmitHandler = event => {
         event.preventDefault();
-        this.props.sendMessage({ to: this.props.to, message: this.state.message });
+        sendMessage({ to: this.props.to, message: this.state.message });
         this.setState({ message: "" })
     }
 
     onChangeHandler = event => {
         this.setState({ message: event.target.value });
     }
+
     renderForm() {
         return (
             <form style={{ position: "fixed", bottom: 0 }}>
@@ -43,7 +46,6 @@ class ChatPage extends React.Component {
     }
 
     renderChat() {
-        console.log(this.props);
         if (this.props.messages)
             return this.props.messages.map(message => (
                 <div key={message.createdAt}>{message.message}</div>
@@ -70,4 +72,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, { sendMessage, getMessages })(ChatPage);
+export default connect(mapStateToProps, { fetchMessages })(ChatPage);

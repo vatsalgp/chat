@@ -1,51 +1,79 @@
-import { getAuthState, signIn as fIn, signOut as fOut, sendMessage as fSend, getMessages as fGet, getRecipients as fRec } from "../firebase";
+import firebase from 'firebase/app';
+
+import 'firebase/firestore';
+import 'firebase/auth';
+
+import firebaseConfig from "../firebaseConfig";
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+const messagesRef = db.collection("messages");
+const recipientsRef = db.collection("recipients");
+
+const getAuthState = () => {
+    if (!auth.currentUser)
+        return null;
+    else {
+        const { displayName, email, photoURL, uid } = auth.currentUser;
+        return { displayName, email, photoURL, uid };
+    }
+};
 
 const updateCache = payload => {
     window.localStorage.setItem("auth", JSON.stringify(payload));
 };
 
+export const sendMessage = ({ message, to }) => {
+    const from = getAuthState().email;
+    const createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    const query = {
+        message,
+        createdAt,
+        from
+    };
+    messagesRef.doc(from).collection(to).add(query);
+    messagesRef.doc(to).collection(from).add(query);
+    recipientsRef.doc(to).set({ [from]: null }, { merge: true });
+    recipientsRef.doc(from).set({ [to]: null }, { merge: true });
+};
+
+export const fetchMessages = (to, chat) => async dispatch => {
+    const from = getAuthState().email;
+    const ref = messagesRef.doc(from).collection(to).orderBy("createdAt");
+    chat.unsubscribe = ref.onSnapshot(snapshot => {
+        const msgs = [];
+        snapshot.forEach(doc => msgs.push(doc.data()));
+        dispatch({
+            type: "FETCH_MESSAGES",
+            payload: { messagesData: msgs, to }
+        });
+    });
+};
+
 export const fetchRecipients = from => async dispatch => {
-    const payload = await fRec(from);
+    const response = await recipientsRef.doc(from).get();
     dispatch({
         type: "FETCH_RECIPIENTS",
-        payload
-    });
-};
-
-export const sendMessage = ({ message, to }) => async dispatch => {
-    const from = getAuthState().email;
-    const messageData = await fSend({ message, to, from });
-    dispatch({
-        type: "FETCH_MESSAGE",
-        payload: { messageData, to }
-    });
-};
-
-export const getMessages = to => async dispatch => {
-    const from = getAuthState().email;
-    const response = await fGet({ to, from });
-    const messages = [];
-    response.forEach(doc => messages.push(doc.data()));
-    console.log(messages);
-    dispatch({
-        type: "FETCH_MESSAGES",
-        payload: { messagesData: messages, to }
+        payload: response.data()
     });
 };
 
 export const signIn = () => async dispatch => {
-    await fIn();
+    const provider = new firebase.auth.GoogleAuthProvider();
+    await auth.signInWithPopup(provider);
     const payload = getAuthState();
     updateCache(payload);
     dispatch({
         type: "FETCH_USER",
         payload
     });
-    fetchRecipients(getAuthState().email);
+    fetchRecipients(payload.email);
 }
 
 export const signOut = () => async dispatch => {
-    await fOut();
+    await auth.signOut();
     const payload = getAuthState();
     updateCache(payload);
     dispatch({
@@ -53,15 +81,6 @@ export const signOut = () => async dispatch => {
         payload
     });
 }
-
-export const fetchUser = () => {
-    const payload = getAuthState();
-    updateCache(payload);
-    return {
-        type: "FETCH_USER",
-        payload
-    };
-};
 
 export const showListPage = () => {
     return {

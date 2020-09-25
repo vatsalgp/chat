@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { signIn, signOut, showListPage } from "../actions";
 import NewForm from "./NewForm";
+import { signIn, signOut, showListPage } from "../actions";
 
 const Header = ({ auth, signIn, signOut, page, showListPage }) => {
     const SignButton = () => {
@@ -11,10 +11,6 @@ const Header = ({ auth, signIn, signOut, page, showListPage }) => {
         else
             return <button onClick={signIn}>Sign In With Google</button>;
     };
-
-    const ListHeader = () => (
-        <li style={{}}><NewForm /></li>
-    );
 
     const ChatHeader = () => (
         <>
@@ -30,7 +26,7 @@ const Header = ({ auth, signIn, signOut, page, showListPage }) => {
                     <li><SignButton /></li>
                 </ul >
                 <ul id="nav-mobile" className="right">
-                    {page ? <ChatHeader /> : <ListHeader />}
+                    {page ? <ChatHeader /> : <li><NewForm /></li>}
                 </ul >
             </div>
         </nav>
