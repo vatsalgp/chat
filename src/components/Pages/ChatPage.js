@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { sendMessage, fetchMessages } from "../../actions"
+import "./ChatPage.css"
 
 class ChatPage extends React.Component {
     state = { message: "" }
@@ -48,7 +49,10 @@ class ChatPage extends React.Component {
     renderChat() {
         if (this.props.messages)
             return this.props.messages.map(message => (
-                <div key={message.createdAt}>{message.message}</div>
+                <div
+                    className={message.email === this.props.to ? "received" : "sent"}
+                    key={message.createdAt}
+                >{message.message}</div>
             ));
         else
             return <div></div>;

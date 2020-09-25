@@ -1,0 +1,9 @@
+.sent {
+	right: 1%;
+	position: absolute;
+}
+
+.received {
+	left: 1%;
+	position: absolute;
+}
