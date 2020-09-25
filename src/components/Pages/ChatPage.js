@@ -44,7 +44,6 @@ class ChatPage extends React.Component {
                     <input
                         type="submit"
                         value="Send"
-                        style={{ marginRight: "5vw", width: "9vw" }}
                         onClick={this.onSubmitHandler} />
                 </div>
             </form>
