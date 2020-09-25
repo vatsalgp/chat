@@ -11,6 +11,10 @@ class ChatPage extends React.Component {
         this.props.fetchMessages(this.props.to, this);
     }
 
+    componentDidUpdate() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
     componentWillUnmount() {
         this.unsubscribe();
     }
@@ -18,7 +22,7 @@ class ChatPage extends React.Component {
     onSubmitHandler = event => {
         event.preventDefault();
         sendMessage({ to: this.props.to, message: this.state.message });
-        this.setState({ message: "" })
+        this.setState({ message: "" });
     }
 
     onChangeHandler = event => {
@@ -40,7 +44,7 @@ class ChatPage extends React.Component {
                     <input
                         type="submit"
                         value="Send"
-                        style={{ marginRight: "5vw", width: "10vw" }}
+                        style={{ marginRight: "5vw", width: "9vw" }}
                         onClick={this.onSubmitHandler} />
                 </div>
             </form>
@@ -58,7 +62,7 @@ class ChatPage extends React.Component {
                     <p className="chat">{message.message}</p>
                 </ li>
             ));
-        return <ul >{jsx}</ul>;
+        return <ul style={{ marginBottom: "48px" }}>{jsx}</ul>;
     }
 
     render() {
