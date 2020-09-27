@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { sendMessage, fetchMessages } from "../../actions"
+import Header from "./Header";
+import { sendMessage, fetchMessages } from "../../../actions";
 import "./ChatPage.css"
 
 class ChatPage extends React.Component {
@@ -67,6 +68,7 @@ class ChatPage extends React.Component {
     render() {
         return (
             <div>
+                <Header />
                 {this.renderChat()}
                 {this.renderForm()}
             </div>

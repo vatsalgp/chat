@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { showChatPage } from "../../actions";
 
-class NewForm extends React.Component {
+import { signOut, showChatPage } from "../../../actions";
+
+class Header extends React.Component {
     state = { email: "" }
 
     onSubmitHandler = event => {
@@ -14,7 +15,7 @@ class NewForm extends React.Component {
         this.setState({ email: event.target.value });
     }
 
-    render() {
+    renderForm() {
         return (
             <form>
                 <div style={{ display: "inline-block" }}>
@@ -36,6 +37,21 @@ class NewForm extends React.Component {
             </form>
         );
     }
+
+    render() {
+        return (
+            <nav>
+                <div className="nav-wrapper">
+                    <ul id="nav-mobile" className="left">
+                        <li><button className="btn" onClick={this.props.signOut}>Sign Out</button></li>
+                    </ul >
+                    <ul id="nav-mobile" className="right">
+                        <li>{this.renderForm()}</li>
+                    </ul >
+                </div>
+            </nav>
+        );
+    }
 }
 
-export default connect(null, { showChatPage })(NewForm);
+export default connect(null, { showChatPage, signOut })(Header);

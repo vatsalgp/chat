@@ -1,13 +1,24 @@
-import React from 'react';
+import React from "react";
+import { connect } from "react-redux";
 
-import Header from "./Header";
-import Main from "./Main";
+import SignInPage from "./Pages/SignPage";
+import ListPage from "./Pages/ListPage";
+import ChatPage from "./Pages/ChatPage";
 
-const App = () => (
-  <div>
-    < Header />
-    <Main />
-  </div>
-);
+const App = ({ auth, page }) => {
+  if (!auth)
+    return <SignInPage />;
+  else if (!page)
+    return <ListPage />;
+  else
+    return <ChatPage />;
+}
 
-export default App;
+const mapStateToProps = ({ page, auth }) => {
+  return {
+    page,
+    auth
+  };
+};
+
+export default connect(mapStateToProps)(App);

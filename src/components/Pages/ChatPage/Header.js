@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { signOut, showListPage } from "../../actions";
+import { signOut, showListPage } from "../../../actions";
 
-const ChatPageHeader = ({ signOut, page, showListPage }) => (
+const Header = ({ signOut, page, showListPage }) => (
     <nav>
         <div className="nav-wrapper">
             <ul id="nav-mobile" className="left">
@@ -21,4 +21,4 @@ const mapStateToProps = ({ page }) => {
     return { page };
 };
 
-export default connect(mapStateToProps, { signOut, showListPage })(ChatPageHeader);
+export default connect(mapStateToProps, { signOut, showListPage })(Header);
