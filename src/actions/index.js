@@ -52,12 +52,13 @@ export const fetchMessages = (to, chat) => async dispatch => {
     });
 };
 
-export const fetchRecipients = from => async dispatch => {
-    const response = await recipientsRef.doc(from).get();
-    dispatch({
-        type: "FETCH_RECIPIENTS",
-        payload: response.data()
-    });
+export const fetchRecipients = (email, component) => async dispatch => {
+    component.unsubscribe = recipientsRef.doc(email).onSnapshot(snapshot =>
+        dispatch({
+            type: "FETCH_RECIPIENTS",
+            payload: snapshot.data()
+        })
+    );
 };
 
 export const signIn = () => async dispatch => {
@@ -69,7 +70,6 @@ export const signIn = () => async dispatch => {
         type: "FETCH_USER",
         payload
     });
-    fetchRecipients(payload.email);
 }
 
 export const signOut = () => async dispatch => {
@@ -79,6 +79,9 @@ export const signOut = () => async dispatch => {
     dispatch({
         type: "FETCH_USER",
         payload
+    });
+    dispatch({
+        type: "REMOVE_RECIPIENTS",
     });
 }
 

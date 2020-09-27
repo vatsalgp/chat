@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import Header from "./Header";
 import { sendMessage, fetchMessages } from "../../../actions";
-import "./ChatPage.css"
+import "./index.css"
 
 class ChatPage extends React.Component {
     state = { message: "" }

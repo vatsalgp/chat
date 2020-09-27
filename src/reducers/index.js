@@ -24,6 +24,8 @@ const messageReducer = (state = {}, { type, payload }) => {
             return { ...state, [payload.to]: payload.messagesData };
         case "FETCH_RECIPIENTS":
             return { ...payload, ...state };
+        case "REMOVE_RECIPIENTS":
+            return {};
         default:
             return state;
     }

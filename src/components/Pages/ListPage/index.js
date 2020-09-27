@@ -6,8 +6,11 @@ import { fetchRecipients, showChatPage } from "../../../actions";
 
 class ListPage extends React.Component {
     componentDidMount() {
-        if (this.props.auth)
-            this.props.fetchRecipients(this.props.auth.email);
+        this.props.fetchRecipients(this.props.auth.email, this);
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     renderList() {
@@ -46,4 +49,4 @@ const mapStateToProps = ({ message, auth }) => {
     };
 }
 
-export default connect(mapStateToProps, { fetchRecipients, showChatPage })(ListPage);
+export default connect(mapStateToProps, { showChatPage, fetchRecipients })(ListPage);
