@@ -9,7 +9,7 @@ const Header = ({ signOut, page, showListPage }) => (
             <ul id="nav-mobile" className="left">
                 <li><button className="btn" onClick={signOut}>Sign Out</button></li>
             </ul >
-            <a href="#!" className="brand-logo center" >{page.split("@")[0]}</a>
+            <a href="#!" className="brand-logo center" >{page}</a>
             <ul id="nav-mobile" className="right">
                 <li><button className="btn" onClick={showListPage}>Back</button></li>
             </ul >
